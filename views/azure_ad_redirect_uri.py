@@ -48,7 +48,6 @@ def azure_ad_redirect_uri_func():
 
     # 已经获取到 authZ code, 重定向到 generate_access_token_req 页面
     elif "code" in query_string:
-        print("here is redirect views")
         session["authZ_code"] = query_string["code"]
         res = redirect(
             url_for(endpoint="generate_access_token_req")
