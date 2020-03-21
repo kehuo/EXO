@@ -30,6 +30,7 @@ def generate_authZ_code_req_func():
                         form.state.data)
 
         session["generate_authZ_code_complete_url"] = form.req_url.data + "?" + query_string
+        session["scope"] = form.scope.data
         return redirect(url_for(endpoint="generate_authZ_code_req"))
 
     html = render_template("azure_ad/GenerateAuthZCodeReq.html",

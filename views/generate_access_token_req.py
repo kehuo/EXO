@@ -42,7 +42,7 @@ def generate_access_token_req_func():
     post_req_url = global_var["azure_ad_token_endpoint"]
     post_req_header = {"Content-Type": global_var["access_token_post_request_content_type"]}
     post_req_body = {"client_id": global_var["client_id"],
-                     "scope": global_var["scope"],
+                     "scope": session["scope"],
                      "code": authZ_code,
                      "redirect_uri": url_for(endpoint="azure_ad_redirect_uri", _external=True),
                      "grant_type": global_var["grant_type"],
