@@ -1,7 +1,7 @@
-{%extends "Base.html"%}
+{%extends "base.html"%}
 {%import "bootstrap/wtf.html" as wtf%}
 
-{%block title%}ReqAuthZCode{%endblock%}
+{%block title%}AccessToken{%endblock%}
 
 {%block page_content%}
 <div class="container">
@@ -25,7 +25,7 @@
     </div>
 
     <div class="page-header">
-        <h3>Valid Access Token:</h3>
+        <h3>Access Token:</h3>
         {%if response_dict%}
             <ul>
                 {%for key in response_dict%}

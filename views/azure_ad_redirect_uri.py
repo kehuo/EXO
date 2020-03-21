@@ -39,17 +39,18 @@ def azure_ad_redirect_uri_func():
     http://localhost:5000/azure_ad_redirect_uri?code=OAQABAAIAAABeAFzDwllzTYGDLh_qYbH8PFcmVlvwmpakl3Pxbs3nRvbZ-U-MuSV4hcw7j4ehXkiKflvMaTlkGlx2svtkHoDE7Bf5XC2TT5BOZphk_BgRBa55wHLdIlw9kss1Ui6jYrVI1VUHAro_egU9AuvJ6xjRRYjeib8RxWntHgY7MtFD70YWnZv6mttOSN-GvpvsmhNJvHdL71gOdIoUAlX1To4kl_awIWyWvU14znW3c4FMCjRQt0I0I6wPigU4ehpLh9VKHR4bZ33EFbhH5T11yaHdnXw40jH9tDBQavBk6Ijj8rGWS6LYOloGfPVlXiOl28nwP3dyqCnpukrl7brwrA7nTW_Oh6djxXioy54sLxyqEyfokC19Q94zmbAo2wFxoh3XXYZJC8Hh7c861VWyzlSa9OFQ7OWZcEBXfF2Su7oNcrCYa1XGANWXG6p4AVNoGy0C0S7UiPVLqqMlkMzAwUY3bWVSL84jGZqdRKQLkJwD6Ey7iTHRbxIHI2j8n1NdayafjpgtwWwNAgcPr9Dj1AAcvCHrYZvPXkkgQHuZxH3OMJyhMvpoJVnQEyrcmKCSBamllzvaCCH_xXV7isLwO8CE-xb-NC8oBxh49ql0xQ9wOCAA&state=123456&session_state=2b1572a9-edda-46cb-b53b-10a1f144d853#
     """
     query_string = dict(request.args)
+    session["authZ_code"] = "" if "error" is query_string else query_string["code"]
 
-    if "error" is query_string:
-        res = redirect(
-            url_for(endpoint="generate_authZ_code_req")
-        )
-        return res
+    # 根据以下3种情况, 来确定按下 button 后会跳转到哪个页面.
+    #   1 如果报错 >> 跳转到 generate_authZ_code_req, 重新生成 authZ_code 的请求链接
+    #   2 如果成功返回 authZ_code >> 跳转到 generate_access_token_req 页面, 使用当前 authZ_code 去请求 access_token
+    #   3 todo 其他再说.
+    redirect_url_endpoint = {"authZ_code": url_for(endpoint="generate_authZ_code_req"),
+                             "access_token": url_for(endpoint="generate_access_token_req")}
 
-    # 已经获取到 authZ code, 重定向到 generate_access_token_req 页面
-    elif "code" in query_string:
-        session["authZ_code"] = query_string["code"]
-        res = redirect(
-            url_for(endpoint="generate_access_token_req")
-        )
-        return res
+    html = render_template("azure_ad/AzureADRedirectUri.html",
+                           authZ_code_endpoint_response=query_string,
+                           redirect_url_endpoint=redirect_url_endpoint)
+
+    res = make_response(html)
+    return res

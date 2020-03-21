@@ -25,7 +25,8 @@ class RouteInitializer(object):
         # 1 home page
         self.app.add_url_rule("/",
                               endpoint="index",
-                              view_func=index_func)
+                              view_func=index_func,
+                              methods=["GET"])
 
         # 2 Azure AD OAuth2 相关
         # 2.1 生成用来请求 AAD authorize endpoint 的完整url 和 query_string (这个AAD endpoint 支持 GET 请求)
@@ -37,7 +38,8 @@ class RouteInitializer(object):
         # 2.2 生成用来请求 AAD token endpoint 的完整url 和 req_body (这个AAD endpoint 支持 POST 请求)
         self.app.add_url_rule("/generate_access_token_req",
                               endpoint="generate_access_token_req",
-                              view_func=generate_access_token_req_func)
+                              view_func=generate_access_token_req_func,
+                              methods=["GET"])
 
         # 2.3 用来接收从 AAD endpoint 重定向过来的数据. 可能是 authZ code, 或者 access token, 或者 error message
         self.app.add_url_rule("/azure_ad_redirect_uri",
