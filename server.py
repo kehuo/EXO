@@ -29,7 +29,7 @@ if __name__ == "__main__":
         'workers': ['WORKERS', 1],
         'worker_connections': ['WORKER_CONNECTIONS', 1],
         'worker_class': ['WORKER_CLASS', 'gunicorn.workers.sync.SyncWorker'],
-        'bind': ['BIND', 'localhost:5000'],
+        'bind': ['BIND', '0.0.0.0:5000'],
         'timeout': ['TIMEOUT', 300]
     }
     env_dict = os.environ
