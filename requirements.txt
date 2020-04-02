@@ -7,4 +7,4 @@ flask_bootstrap
 flask_wtf
 gunicorn
 pyinstaller
-setuptools
+requests

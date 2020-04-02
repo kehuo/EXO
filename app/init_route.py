@@ -9,6 +9,7 @@ from views.generate_authZ_code_req import generate_authZ_code_req_func
 from views.azure_ad_redirect_uri import azure_ad_redirect_uri_func
 from views.generate_access_token_req import generate_access_token_req_func
 from views.index import index_func
+from views.mirosoft_test_home import msft_test_home_func
 
 
 class RouteInitializer(object):
@@ -22,10 +23,16 @@ class RouteInitializer(object):
         """
         添加后台支持的 api
         """
-        # 1 home page
+        # 1 index page
         self.app.add_url_rule("/",
                               endpoint="index",
                               view_func=index_func,
+                              methods=["GET"])
+
+        # 2 microsoft layout test home page
+        self.app.add_url_rule("/home",
+                              endpoint="msft_test_home",
+                              view_func=msft_test_home_func,
                               methods=["GET"])
 
         # 2 Azure AD OAuth2 相关
